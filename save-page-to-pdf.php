@@ -49,8 +49,8 @@ function api2pdf_setting_string_fn() {
 
 // CHECKBOX - Name: savePageToPdf_options[chkbox1]
 function api2pdf_setting_chk1_fn() {
-	$options = get_option('savePageToPdf_options');
-	if($options['savePageToPdf_support']) { $checked = ' checked="checked" '; }
+	$options = get_option('savePageToPdf_options', false);
+	$checked = isset($options['savePageToPdf_support']) ? 'checked="checked"' : '';
 	echo "<input ".$checked." id='savePageToPdf_support' name='savePageToPdf_options[savePageToPdf_support]' type='checkbox' /> Yes (Allow this plugin to place a small attribution link on my website)";
 }
 
@@ -110,8 +110,12 @@ function api2pdf_addAjaxUrlToFooter() {
 
 }
 
-function api2pdf_addPoweredByLinkToFooter() { 
-	if (get_option('savePageToPdf_options')["savePageToPdf_support"])
+function api2pdf_addPoweredByLinkToFooter() {
+	if (
+		isset( get_option('savePageToPdf_options')["savePageToPdf_support"] ) ? 
+		get_option('savePageToPdf_options')["savePageToPdf_support"] : 
+		false
+	   )
 	{
 		echo '<style>.api2PdfSupport {display: block; width:100%; font-size:x-small;}</style>';
 		echo '<div class ="api2PdfSuport"><a href="https://www.api2pdf.com">WordPress PDF Generation Powered by Api2Pdf.com</a></div>';
